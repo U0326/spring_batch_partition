@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch
+               http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+               http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+               http://mybatis.org/schema/mybatis-spring
+               http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <mybatis:scan base-package="work.garaku.code.example.spring_batch_partition"/>
+
+    <bean id="batchModeSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+        <constructor-arg index="1" value="BATCH"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource">
+        <property name="configuration">
+            <bean class="org.apache.ibatis.session.Configuration"
+                  p:localCacheScope="STATEMENT"
+                  p:lazyLoadingEnabled="false"
+                  p:aggressiveLazyLoading="false"
+                  p:defaultFetchSize="100"
+                  p:defaultExecutorType="REUSE"/>
+        </property>
+    </bean>
+</beans>
